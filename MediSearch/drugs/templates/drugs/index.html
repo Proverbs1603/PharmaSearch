@@ -1,0 +1,10 @@
+{% if drug_list %}
+<ul>
+    {% for drug in drug_list %}
+    <!-- <li><a href="/polls/{{question.id}}">{{question.question_text}}</a></li> -->
+    <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>no drug search list</p>
+{% endif %}
