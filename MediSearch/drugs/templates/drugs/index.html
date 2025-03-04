@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Books</title>
+        <title>Drugs</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     </head>
     <body>
@@ -14,8 +14,21 @@
             </h1>
             <form method="GET">
                 <div class="control">
-                    <input class="input" type="text" placeholder="Find a Drug" name="q">
+                    <input class="input" type="text" placeholder="Find a Drug" name="q" value="{{ request.GET.q }}">
                 </div>
+
+                <!-- 특허권 등재자 필터 (드롭다운) -->
+                <div class="control">
+                    <div class="select">
+                        <select name="bssh_nm">
+                            <option value="">All Patent Holders</option>
+                            {% for bssh_nm in bssh_nm_list %}
+                                <option value="{{ bssh_nm }}" {% if request.GET.bssh_nm == bssh_nm %}selected{% endif %}>{{ bssh_nm }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
                 <div class="control">
                     <button class="button is-info">
                         Search
