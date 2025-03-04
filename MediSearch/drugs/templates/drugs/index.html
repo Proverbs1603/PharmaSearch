@@ -1,10 +1,57 @@
-{% if drug_list %}
-<ul>
-    {% for drug in drug_list %}
-    <!-- <li><a href="/polls/{{question.id}}">{{question.question_text}}</a></li> -->
-    <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>no drug search list</p>
-{% endif %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Books</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    </head>
+    <body>
+    <section class="section">
+        <div class="container mb-5">
+            <h1 class="title">
+                Search Drugs
+            </h1>
+            <form method="GET">
+                <div class="control">
+                    <input class="input" type="text" placeholder="Find a Drug" name="q">
+                </div>
+                <div class="control">
+                    <button class="button is-info">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <div class="container mt-4">
+        {% if drugs %}
+            {% for drug in drugs %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <!-- 특허번호 및 등재일자 (상단 배치) -->
+                    <p class="text-muted small">
+                        <strong>특허번호:</strong> {{ drug.ptnt_no }} | 
+                        <strong>등재일자:</strong> {{ drug.ptnt_reg_dt }}
+                    </p>
+    
+                    <!-- 제품 정보 -->
+                    <h5 class="card-title"><strong>제품명:</strong> {{ drug.prdlst_nm }}</h5>
+                    <h6 class="card-subtitle text-muted"><strong>한글 성분명:</strong> {{ drug.drug_cpnt_kor_nm }}</h6>
+                    <p class="card-text">
+                        <strong>영문 성분명:</strong> {{ drug.drug_cpnt_eng_nm }}<br>
+                        <strong>특허권 등재자:</strong> {{ drug.bssh_nm }}<br>
+                        <strong>등재 특허권자:</strong> {{ drug.pthd_nm }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">검색 결과가 없습니다.</p>
+        {% endif %}
+    </div>
+    
+    
+    </body>
+</html>

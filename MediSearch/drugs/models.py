@@ -9,3 +9,6 @@ class Drug(models.Model):
     pthd_nm = models.TextField(null=True, blank=True)          #등재특허권자
     ptnt_reg_dt = models.DateTimeField(auto_now_add=True)      #등재일자
     ptnt_no = models.CharField(max_length=20)                  #특허번호
+
+    def __str__(self):
+        return self.prdlst_nm
