@@ -5,11 +5,8 @@ def search_drugs(
         query: str = None,
         company_filter: str = None,
         page: int = 1,
-        page_size: int = 10
+        page_size: int = 20
 ):
-    """
-    Elasticsearch에서 약품 검색 및 Django Paginator와 연동
-    """
 
     # 기본 검색 쿼리 설정
     if query:
@@ -36,11 +33,11 @@ def search_drugs(
     if filters:
         q = Q("bool", must=[q], filter=filters)
 
-    # 페이지네이션을 위한 size 계산
-    size = page_size
+    # 페이지네이션 계산
+    from_ = (page - 1) * page_size
 
     # 검색 쿼리 실행 및 정렬 설정
-    return DrugDocument.search().query(q).extra(size=size)
+    return DrugDocument.search().query(q).extra(from_=from_,size=page_size)
 
 
 #영어 성분명 자동완성 검색 (최대 5개 자동완성 추천)
@@ -48,5 +45,6 @@ def auto_complete_drug_eng(query: str, size: int = 5):
     if not query:
         return []
 
-    q = Q("match_phrase_prefix", drug_cpnt_eng_nm=query) # n-gram 필드에서 자동완성 검색
+    # n-gram 필드에서 자동완성 검색
+    q = Q("match_phrase_prefix", drug_cpnt_eng_nm=query) 
     return DrugDocument.search().query(q).extra(size=size)
