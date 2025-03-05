@@ -3,5 +3,6 @@ from . import views
 
 app_name = 'drugs'
 urlpatterns = [
-    path('', views.index, name='index'),  #views 파일에 index 함수로 가세요(컨트롤러)
+    path('', views.index, name='index'),
+    path("autocomplete/", views.autocomplete_drugs, name="autocomplete_drugs"),
 ]

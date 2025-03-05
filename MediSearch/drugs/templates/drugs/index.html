@@ -5,17 +5,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Drugs</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+        <style>
+            /* 자동완성 스타일 */
+            #autocomplete-container {
+                display: none;
+                position: absolute;
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 5px;
+                max-height: 250px;
+                overflow-y: auto;
+                z-index: 1000;
+                width: 100%;
+            }
+
+            #autocomplete-results {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #autocomplete-results li {
+                padding: 10px;
+                cursor: pointer;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            #autocomplete-results li:hover {
+                background-color: #f5f5f5;
+            }
+        </style>
     </head>
     <body>
     <section class="section">
         <div class="container mb-5">
-            <h1 class="title">
-                Search Drugs
-            </h1>
+            <h1 class="title"> Search Drugs </h1>
             <form method="GET">
-                <div class="control">
-                    <input class="input" type="text" placeholder="Find a Drug" name="q" value="{{ request.GET.q }}">
+                
+                <div class="control has-icons-left">
+                    <input class="input" type="text" id="search-box" placeholder="Find a Drug" name="q" value="{{ request.GET.q }}" autocomplete="off">
+                    <span class="icon is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
                 </div>
+
+                <!-- 자동완성 결과 리스트 -->
+                <div id="autocomplete-container" class="box">
+                    <ul id="autocomplete-results"></ul>
+                </div>
+
 
                 <!-- 특허권 등재자 필터 (드롭다운) -->
                 <div class="control">
@@ -65,5 +104,56 @@
         {% endif %}
     </div>
     
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchBox = document.getElementById("search-box");
+        const resultsContainer = document.getElementById("autocomplete-container");
+        const resultsList = document.getElementById("autocomplete-results");
+
+        searchBox.addEventListener("input", function () {
+            const query = searchBox.value.trim();
+            if (query.length < 2) {
+                resultsContainer.style.display = "none";
+                return;
+            }
+
+            fetch(`autocomplete/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsList.innerHTML = "";
+
+                    if (data.length === 0) {
+                        resultsContainer.style.display = "none";
+                        return;
+                    }
+
+                    resultsContainer.style.display = "block";
+
+                    data.forEach(item => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = item;
+
+                        listItem.addEventListener("click", function () {
+                            searchBox.value = item;
+                            resultsContainer.style.display = "none";
+                        });
+
+                        resultsList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error("Error fetching autocomplete:", error));
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!searchBox.contains(event.target) && !resultsContainer.contains(event.target)) {
+                resultsContainer.style.display = "none";
+            }
+        });
+    });
+
+    </script>
+        
+
     </body>
 </html>

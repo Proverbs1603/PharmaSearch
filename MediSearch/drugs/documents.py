@@ -7,6 +7,14 @@ class DrugDocument(Document):
     prdlst_nm = fields.TextField(analyzer="korean_analyzer")
     drug_cpnt_kor_nm = fields.TextField(analyzer="korean_synonym_analyzer")  # 동의어 적용
     pthd_nm = fields.TextField(analyzer="korean_analyzer")
+    drug_cpnt_eng_nm = fields.TextField(analyzer="ngram_analyzer")
+    bssh_nm = fields.TextField(
+        fields = {
+            "raw" : {
+                "type" : 'keyword'
+            }
+        }
+    )
 
     class Index:
         name = "drugs"
@@ -24,6 +32,19 @@ class DrugDocument(Document):
                         "type": "custom",
                         "tokenizer": "nori_tokenizer",
                         "filter": ["lowercase", "synonym_filter"]
+                    },
+                    "ngram_analyzer": {    # n-gram 분석기
+                        "type": "custom",
+                        "tokenizer": "ngram_tokenizer",
+                        "filter": ["lowercase"]
+                    }
+                },
+                "tokenizer": {
+                    "ngram_tokenizer": { # n-gram 토크나이저 설정
+                        "type": "ngram",
+                        "min_gram": 2,
+                        "max_gram": 3,
+                        "token_chars": ["letter", "digit"]
                     }
                 },
                 "filter": {
@@ -39,4 +60,4 @@ class DrugDocument(Document):
 
     class Django:
         model = Drug
-        fields = ["drug_cpnt_eng_nm", "ptnt_no", "ptnt_reg_dt"]
+        fields = ["ptnt_no", "ptnt_reg_dt"]
