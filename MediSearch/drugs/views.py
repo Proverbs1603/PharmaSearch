@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from .documents import DrugDocument
-from elasticsearch_dsl import Q
 from .models import Drug
-from .search import search_drugs
-from django.core.paginator import Paginator
+from .search import search_drugs, auto_complete_drug_eng
+from django.http import JsonResponse
 
 def index(request):
     search_query = request.GET.get("q")  # 질의어 (검색 키워드)
@@ -38,3 +37,19 @@ def index(request):
     context["bssh_nm_list"] = [entry['bssh_nm'] for entry in distinct_companies]
 
     return render(request, 'drugs/index.html', context)
+
+
+def autocomplete_drugs(request):
+    query = request.GET.get("q", "")
+
+    # 입력이 없거나 길이가 너무 짧으면 빈 배열 반환
+    if not query or len(query) < 2:
+        return JsonResponse([], safe=False)
+
+    # 검색 요청에 대한 자동완성 결과 가져오기
+    suggestions = auto_complete_drug_eng(query)
+
+    # Elasticsearch 결과에서 drug_cpnt_eng_nm만 추출하여 반환
+    results = [entry.drug_cpnt_eng_nm for entry in suggestions]
+    
+    return JsonResponse(results, safe=False)

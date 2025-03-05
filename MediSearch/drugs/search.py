@@ -41,3 +41,12 @@ def search_drugs(
 
     # 검색 쿼리 실행 및 정렬 설정
     return DrugDocument.search().query(q).extra(size=size)
+
+
+#영어 성분명 자동완성 검색 (최대 5개 자동완성 추천)
+def auto_complete_drug_eng(query: str, size: int = 5):
+    if not query:
+        return []
+
+    q = Q("match_phrase_prefix", drug_cpnt_eng_nm=query) # n-gram 필드에서 자동완성 검색
+    return DrugDocument.search().query(q).extra(size=size)
