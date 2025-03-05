@@ -16,7 +16,7 @@ PharmaSearch는 Django와 Docker-compose를 기반으로 개발되었습니다. 
 
 ```bash
 # 파이썬 가상환경 생성
-python -m venv bio-venv 
+python3 -m venv bio-venv 
 
 # 가상환경 활성화 (OS에 따라 선택)
 source bio-venv/bin/activate  # macOS/Linux
@@ -32,6 +32,7 @@ pip install -r requirements.txt
 ### 2. 데이터베이스 마이그레이션
 
 ```bash
+cd MediSearch
 python manage.py migrate
 ```
 
@@ -42,6 +43,9 @@ python manage.py runserver
 ```
 
 Django 서버가 실행되면 브라우저에서 [http://127.0.0.1:8000/drugs](http://127.0.0.1:8000/drugs) 로 접속할 수 있습니다.
+
+![image](https://github.com/user-attachments/assets/ab6720ca-7c41-4371-af7b-beb727f4f9e4)
+
 
 ### 4. docker-compose로 Elasticsearch 서버 실행
 
@@ -62,7 +66,6 @@ python data.py
 
 - Elasticsearch 인덱스 생성
 ```bash
-cd ..
 python manage.py search_index --rebuild
 ```
 
