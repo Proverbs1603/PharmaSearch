@@ -1,6 +1,6 @@
 # PharmaSearch
 
-PharmaSearch는 의약품 및 특허 정보를 검색하고 필터링할 수 있는 웹 애플리케이션입니다. 사용자는 특정 성분명이나 특허권 등재자를 기준으로 의약품 데이터를 조회할 수 있습니다.
+PharmaSearch는 의약품 및 특허 정보를 검색하고 필터링할 수 있는 웹 애플리케이션입니다. 사용자는 제품명, 한글_성분명, 영어_성분명 등을 기준으로 의약품 데이터를 조회할 수 있습니다.
 
 ## 📌 프로젝트 실행 방법
 
@@ -72,7 +72,6 @@ python manage.py search_index --rebuild
 식품의약품안전처_의약품 국내 특허현황
 
 데이터 소스 : https://www.data.go.kr/data/15117409/openapi.do#/API%20%EB%AA%A9%EB%A1%9D/getDrugDmstPtntStusService
-[https://www.data.go.kr/data/15117409/openapi.do#/API%20%EB%AA%A9%EB%A1%9D/getDrugDmstPtntStusService](https://www.data.go.kr/data/15117409/openapi.do#/API%20%EB%AA%A9%EB%A1%9D/getDrugDmstPtntStusService)
 
 
 PharmaSearch는 아래와 같은 주요 정보를 포함하는 데이터셋을 사용하며 726개의 데이터셋으로 이루어져있습니다.
