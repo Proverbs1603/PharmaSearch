@@ -5,9 +5,15 @@ from .models import Drug
 @registry.register_document
 class DrugDocument(Document):
     prdlst_nm = fields.TextField(analyzer="korean_analyzer")
-    bssh_nm = fields.TextField(analyzer="korean_analyzer")
     drug_cpnt_kor_nm = fields.TextField(analyzer="korean_analyzer")
     pthd_nm = fields.TextField(analyzer="korean_analyzer")
+    bssh_nm = fields.TextField(
+        fields = {
+            "raw" : {
+                "type" : 'keyword'
+            }
+        }
+    )
 
     class Index:
         name = "drugs"
