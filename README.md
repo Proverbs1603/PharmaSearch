@@ -60,12 +60,13 @@ Elasticsearch 서버가 실행되면 브라우저에서 [http://127.0.0.1:9200](
 
 - 데이터 삽입
 ```bash
-cd MediSearch/data
+cd MediSearch/drugs/data
 python data.py
 ```
 
 - Elasticsearch 인덱스 생성
 ```bash
+cd ../..
 python manage.py search_index --rebuild
 ```
 
